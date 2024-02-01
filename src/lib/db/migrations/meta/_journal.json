@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1706773818822,
+      "tag": "0000_right_jazinda",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1706774887057,
+      "tag": "0001_handy_redwing",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1706775919632,
+      "tag": "0002_regular_fixer",
+      "breakpoints": true
+    }
+  ]
+}
