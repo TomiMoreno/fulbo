@@ -5,15 +5,21 @@ import {
   insertMatchParams,
   updateMatchParams,
 } from "@/lib/db/schema/matches";
-import { createMatch, deleteMatch, updateMatch } from "@/lib/api/matches/mutations";
+import {
+  createMatch,
+  deleteMatch,
+  updateMatch,
+} from "@/lib/api/matches/mutations";
 
 export const matchesRouter = router({
   getMatches: publicProcedure.query(async () => {
     return getMatches();
   }),
-  getMatchById: publicProcedure.input(matchIdSchema).query(async ({ input }) => {
-    return getMatchById(input.id);
-  }),
+  getMatchById: publicProcedure
+    .input(matchIdSchema)
+    .query(async ({ input }) => {
+      return getMatchById(input.id);
+    }),
   createMatch: publicProcedure
     .input(insertMatchParams)
     .mutation(async ({ input }) => {

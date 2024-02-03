@@ -1,5 +1,5 @@
 import { type getMatches } from "@/lib/api/matches/queries";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   date,
   integer,
@@ -12,6 +12,7 @@ import { z } from "zod";
 import { players } from "./players";
 
 import { nanoid, timestamps } from "@/lib/utils";
+import { teams } from "./teams";
 
 export const matches = pgTable("matches", {
   id: varchar("id", { length: 191 })
@@ -23,6 +24,12 @@ export const matches = pgTable("matches", {
     .notNull(),
   homeScore: integer("home_score").notNull(),
   awayScore: integer("away_score").notNull(),
+  homeTeamId: varchar("home_team_id", { length: 256 })
+    .references(() => teams.id)
+    .notNull(),
+  awayTeamId: varchar("away_team_id", { length: 256 })
+    .references(() => teams.id)
+    .notNull(),
   createdAt: timestamp("created_at")
     .notNull()
     .default(sql`now()`),
@@ -31,7 +38,23 @@ export const matches = pgTable("matches", {
     .default(sql`now()`),
 });
 
-// Schema for matches - used to validate API requests
+export const matchesRelations = relations(matches, ({ one }) => ({
+  homeTeam: one(teams, {
+    fields: [matches.homeTeamId],
+    references: [teams.id],
+    relationName: "home_team",
+  }),
+  awayTeam: one(teams, {
+    fields: [matches.awayTeamId],
+    references: [teams.id],
+    relationName: "away_team",
+  }),
+  organizer: one(players, {
+    fields: [matches.playerId],
+    references: [players.id],
+  }),
+}));
+
 const baseSchema = createSelectSchema(matches).omit(timestamps);
 
 export const insertMatchSchema = createInsertSchema(matches).omit(timestamps);

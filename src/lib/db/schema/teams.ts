@@ -22,7 +22,7 @@ export const teams = pgTable("teams", {
     .default(sql`now()`),
 });
 
-export const teamRelations = relations(teams, ({ many }) => ({
+export const teamsRelations = relations(teams, ({ many }) => ({
   teamsToPlayers: many(teamsToPlayers),
 }));
 

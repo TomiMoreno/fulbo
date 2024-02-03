@@ -48,6 +48,7 @@ const MatchForm = ({
 }) => {
   const { toast } = useToast();
   const { data: players } = trpc.players.getPlayers.useQuery();
+  const { data: teams } = trpc.teams.getTeams.useQuery();
   const editing = !!match?.id;
 
   const router = useRouter();
@@ -187,12 +188,68 @@ const MatchForm = ({
         />
         <FormField
           control={form.control}
+          name="homeTeamId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Home team</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={String(field.value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a team" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {teams?.teams.map((team) => (
+                      <SelectItem key={team.id} value={team.id.toString()}>
+                        {team.name}{" "}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="homeScore"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Home Score</FormLabel>
               <FormControl>
                 <Input {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="awayTeamId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Away team</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={String(field.value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a team" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {teams?.teams.map((team) => (
+                      <SelectItem key={team.id} value={team.id.toString()}>
+                        {team.name}{" "}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
 
               <FormMessage />
